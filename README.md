@@ -21,13 +21,8 @@ To configure the project:
 ```
 cmake --preset Debug
 ```
-or
-```
-cmake --preset Release
-```
 
 Build:
 ```
 cmake --build --preset app-debug
 ```
-
