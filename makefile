@@ -5,4 +5,4 @@ clean:
 	rm hello.elf
 
 build:
-	arm-none-eabi-gcc -O0 -g hello.c -o hello.elf -specs=rdimon.specs -lc -lrdimon -lnosys -static
+	arm-none-eabi-gcc -O0 -g main.c -o hello.elf -specs=rdimon.specs -lc -lrdimon -lnosys -static
