@@ -3,6 +3,8 @@
         "ms-vscode.cpptools",
         "ms-vscode.cpptools-extension-pack",
         "vscode.makefile-tools",
-        "ms-azuretools.vscode-containers"
+        "ms-vscode.cmake-tools",
+        "ms-azuretools.vscode-containers",
+        "emmanuelbeziat.vscode-great-icons"
     ]
 }
