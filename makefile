@@ -1,5 +1,5 @@
 all:
-	echo "use target 'clean', 'build' or `run`"
+	echo "use target 'clean', 'build', 'run', 'cmakebuild' or 'cmakerun'"
 
 clean:
 	rm -f hello.elf
