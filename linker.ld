@@ -1,6 +1,7 @@
 OUTPUT_FORMAT("elf32-littlearm", "elf32-bigarm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
 ENTRY(_start)
+__stack_base__ = 0x80000;
 
 SECTIONS
 {
