@@ -31,6 +31,8 @@ SECTIONS
 
     . = ALIGN(8);
     __heap_start__ = .;
+    _end = .;
+    PROVIDE(end = .);
     . = ORIGIN(RAM) + LENGTH(RAM);
     __stack_top__ = .;
 }
