@@ -10,11 +10,11 @@ build:
 run:
 	../qemu/build/qemu-system-arm -audio driver=none -M versatilepb -nographic -semihosting -kernel hello.elf
 
-buildcmake:
+cmakebuild:
 	cmake --preset Debug
 	cmake --build --preset app-debug --target clean
 	cmake --build --preset app-debug
 
-runcmake:
+cmakerun:
 	../qemu/build/qemu-system-arm -audio driver=none -M versatilepb -nographic -semihosting -kernel build/Debug/qemutest.elf
 
