@@ -19,7 +19,7 @@ cmakerun:
 	../qemu/build/qemu-system-arm -audio driver=none -M versatilepb -nographic -semihosting -kernel build/Debug/qemutest.elf
 
 cmakerunm4:
-	../qemu/build/qemu-system-arm -M mps2-an386 -audio driver=none -M versatilepb -nographic -semihosting -kernel build/Debug/qemutest.elf
+	../qemu/build/qemu-system-arm -M mps2-an386 -audio driver=none -nographic -semihosting -kernel build/Debug/qemutest.elf
 
 cmakerunm33:
-	../qemu/build/qemu-system-arm -M mps2-an505 -audio driver=none -M versatilepb -nographic -semihosting -S -gdb tcp:1234 -kernel build/Debug/qemutest.elf
+	../qemu/build/qemu-system-arm -M mps2-an505 -audio driver=none -nographic -semihosting -S -gdb tcp:0.0.0.0:1234 -kernel build/Debug/qemutest.elf

@@ -35,12 +35,22 @@ void Default_Handler(void) {
 }
 
 __attribute__((section(".isr_vector")))
-const void *vector_table[] = {
-    &_estack,
-    Reset_Handler,
-    Default_Handler,   /* NMI */
-    Default_Handler,   /* HardFault */
-    Default_Handler,   /* MemManage */
-    Default_Handler,   /* BusFault */
-    Default_Handler,   /* UsageFault */
+const void *vector_table[] =
+{
+    &_estack,               /*  0 Initial MSP */
+    Reset_Handler,          /*  1 Reset */
+    Default_Handler,        /*  2 NMI */
+    Default_Handler,        /*  3 HardFault */
+    Default_Handler,        /*  4 MemManage */
+    Default_Handler,        /*  5 BusFault */
+    Default_Handler,        /*  6 UsageFault */
+    0,                      /*  7 Reserved */
+    0,                      /*  8 Reserved */
+    0,                      /*  9 Reserved */
+    0,                      /* 10 Reserved */
+    Default_Handler,        /* 11 SVC */
+    Default_Handler,        /* 12 DebugMon */
+    0,                      /* 13 Reserved */
+    Default_Handler,        /* 14 PendSV */
+    Default_Handler,        /* 15 SysTick */
 };
