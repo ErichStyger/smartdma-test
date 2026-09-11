@@ -79,10 +79,9 @@ add_compile_options(
   #-ffreestanding 
   #-fno-builtin 
   #-fmerge-constants 
-  #-mcpu=cortex-m4 
-  #-mfpu=fpv4-sp-d16 
-  #-mfloat-abi=hard 
-  #-mthumb
+  -mcpu=arm926ej-s
+  -mfloat-abi=soft
+  -marm
 )
 
 target_compile_definitions(${EXECUTABLE} PRIVATE
