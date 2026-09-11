@@ -26,3 +26,16 @@ Build:
 ```
 cmake --build --preset app-debug
 ```
+
+## GDB
+arm-none-eabi-gdb build/Debug/qemutest.elf
+
+target remote :1234
+
+info registers
+x/8wx 0x00000000
+
+break Reset_Handler
+break main
+
+continue
