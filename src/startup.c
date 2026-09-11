@@ -54,3 +54,4 @@ const void *vector_table[] =
     Default_Handler,        /* 14 PendSV */
     Default_Handler,        /* 15 SysTick */
 };
+
