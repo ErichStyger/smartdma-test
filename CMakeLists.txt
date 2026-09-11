@@ -76,13 +76,13 @@ add_compile_options(
   -ffunction-sections 
   -fdata-sections 
 
-  -ffreestanding 
-  -fno-builtin 
-  -fmerge-constants 
-  -mcpu=cortex-m4 
-  -mfpu=fpv4-sp-d16 
-  -mfloat-abi=hard 
-  -mthumb
+  #-ffreestanding 
+  #-fno-builtin 
+  #-fmerge-constants 
+  #-mcpu=cortex-m4 
+  #-mfpu=fpv4-sp-d16 
+  #-mfloat-abi=hard 
+  #-mthumb
 )
 
 target_compile_definitions(${EXECUTABLE} PRIVATE
