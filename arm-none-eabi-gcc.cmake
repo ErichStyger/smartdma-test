@@ -77,9 +77,8 @@ set(CMAKE_CXX_FLAGS "${OBJECT_GEN_FLAGS} -std=c++11 " CACHE INTERNAL "C++ Compil
 set(CMAKE_ASM_FLAGS "${OBJECT_GEN_FLAGS} -x assembler-with-cpp " CACHE INTERNAL "ASM Compiler options")
 
 # -Wl,--gc-sections     Perform the dead code elimination.
-# --specs=nano.specs    Link with newlib-nano.
-# --specs=nosys.specs   No syscalls, provide empty implementations for the POSIX system calls.
-set(CMAKE_EXE_LINKER_FLAGS "-nostdlib -Wl,--gc-sections,--cref,--print-memory-usage,--sort-section=alignment --specs=nano.specs --specs=nosys.specs -mthumb -Wl,-Map=${CMAKE_PROJECT_NAME}.map" CACHE INTERNAL "Linker options")
+# --specs=rdimon.specs  Link with newlib semihosting support.
+set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections,--cref,--print-memory-usage,--sort-section=alignment --specs=rdimon.specs -lc -lrdimon -lnosys -static -mthumb -Wl,-Map=${CMAKE_PROJECT_NAME}.map" CACHE INTERNAL "Linker options")
 
 # Options for DEBUG build
 # -Og   Enables optimizations that do not interfere with debugging.
