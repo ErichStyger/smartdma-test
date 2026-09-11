@@ -22,5 +22,8 @@
 #define McuLib_CONFIG_CPU_IS_MCXN       (1)  /* MCXN947 */
 #define McuLib_CONFIG_CORTEX_M          (33)    /*!< 0: Cortex-M0, 3: M3, 4: M4, 7: M7, 33: M33, -1 otherwise */
 #define McuLib_CONFIG_SDK_VERSION_USED  McuLib_CONFIG_SDK_MCUXPRESSO_2_0
+//#define McuLib_CONFIG_SDK_VERSION_USED  McuLib_CONFIG_SDK_GENERIC
+/* ------------------- RTOS ---------------------------*/
+#define McuLib_CONFIG_SDK_USE_FREERTOS       (0)
 
 #endif /* MCULIB_CONFIG_CONFIG_H_ */
