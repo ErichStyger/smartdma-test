@@ -70,7 +70,7 @@ set(CMAKE_SIZE_UTIL ${TOOLCHAIN_BIN_DIR}/${TOOLCHAIN}-size${TOOLCHAIN_EXT} CACHE
 #set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 #set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
-set(OBJECT_GEN_FLAGS "-O0 -fno-common -g3 -ggdb -Wall -ffunction-sections -fdata-sections -ffreestanding -fno-builtin -fmerge-constants -fno-common -mcpu=arm926ej-s -mfloat-abi=soft -marm")
+set(OBJECT_GEN_FLAGS "-O0 -fno-common -g3 -ggdb -Wall -ffunction-sections -fdata-sections -ffreestanding -fno-builtin -fmerge-constants -fno-common")
 
 set(CMAKE_C_FLAGS   "${OBJECT_GEN_FLAGS} -std=gnu99 " CACHE INTERNAL "C Compiler options")
 set(CMAKE_CXX_FLAGS "${OBJECT_GEN_FLAGS} -std=c++11 " CACHE INTERNAL "C++ Compiler options")
@@ -78,7 +78,7 @@ set(CMAKE_ASM_FLAGS "${OBJECT_GEN_FLAGS} -x assembler-with-cpp " CACHE INTERNAL 
 
 # -Wl,--gc-sections     Perform the dead code elimination.
 # --specs=rdimon.specs  Link with newlib semihosting support.
-set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections,--cref,--print-memory-usage,--sort-section=alignment --specs=rdimon.specs -lc -lrdimon -lnosys -static -marm -Wl,-Map=${CMAKE_PROJECT_NAME}.map" CACHE INTERNAL "Linker options")
+set(CMAKE_EXE_LINKER_FLAGS "-Wl,--gc-sections,--cref,--print-memory-usage,--sort-section=alignment --specs=rdimon.specs -lc -lrdimon -lnosys -static -mcpu=cortex-m33 -mthumb -Wl,-Map=${CMAKE_PROJECT_NAME}.map" CACHE INTERNAL "Linker options")
 
 # Options for DEBUG build
 # -Og   Enables optimizations that do not interfere with debugging.

@@ -1,124 +1,174 @@
-OUTPUT_FORMAT("elf32-littlearm", "elf32-bigarm", "elf32-littlearm")
-OUTPUT_ARCH(arm)
-ENTRY(_start)
-__stack_base__ = 0x80000;
+/* M33 */
+/*
+mps2-an505   Cortex-M33, AN505
+mps2-an521   dual Cortex-M33, AN521
+
+an505:
+0x00000000 - 0x0DFFFFFF   Non-secure CODE
+0x10000000 - 0x1DFFFFFF   Secure CODE alias
+
+0x20000000 - 0x20FFFFFF   Internal SRAM address space
+0x30000000 - 0x30FFFFFF   Secure SRAM alias
+
+0x40000000 - 0x4FFFFFFF   Non-secure peripherals
+0x50000000 - 0x5FFFFFFF   Secure peripheral aliases
+*/
+
+/* mps2-an505.ld
+ *
+ * QEMU machine:
+ *   qemu-system-arm -M mps2-an505
+ *
+ * Cortex-M33 / ARMv8-M
+ */
+
+ENTRY(Reset_Handler)
+
+MEMORY
+{
+    /*
+     * SSRAM0
+     *
+     * QEMU:
+     *   0x00000000 - 0x003FFFFF
+     *   4 MiB
+     *
+     * Normally used for vector table and program code.
+     */
+    CODE (rx) :
+        ORIGIN = 0x00000000,
+        LENGTH = 4M
+
+    /*
+     * SSRAM1 + SSRAM2
+     *
+     * SSRAM1:
+     *   0x28000000 - 0x281FFFFF
+     *
+     * SSRAM2:
+     *   0x28200000 - 0x283FFFFF
+     *
+     * They are contiguous, so use them as one 4 MiB region.
+     */
+    RAM (rwx) :
+        ORIGIN = 0x28000000,
+        LENGTH = 4M
+}
+
+
+/* Initial stack pointer */
+_estack = ORIGIN(RAM) + LENGTH(RAM);
+
 
 SECTIONS
 {
-  PROVIDE(__executable_start = SEGMENT_START("text-segment", 0x8000));
-  . = SEGMENT_START("text-segment", 0x8000);
+    /*
+     * Cortex-M vector table.
+     * Must be first in the image.
+     */
+    .isr_vector :
+    {
+        . = ALIGN(4);
+        KEEP(*(.isr_vector))
+        . = ALIGN(4);
+    } > CODE
 
-  .init   : { KEEP (*(SORT_NONE(.init))) }
 
-  .text   :
-  {
-    *(.text.unlikely .text.*_unlikely .text.unlikely.*)
-    *(.text.exit .text.exit.*)
-    *(.text.startup .text.startup.*)
-    *(.text.hot .text.hot.*)
-    *(SORT(.text.sorted.*))
-    *(.text .stub .text.* .gnu.linkonce.t.*)
-    *(.gnu.warning)
-    *(.glue_7t) *(.glue_7) *(.vfp11_veneer) *(.v4_bx)
-  }
+    /*
+     * Program code and constants
+     */
+    .text :
+    {
+        . = ALIGN(4);
 
-  .fini   : { KEEP (*(SORT_NONE(.fini))) }
+        *(.text)
+        *(.text*)
 
-  PROVIDE(__etext = .);
-  PROVIDE(_etext = .);
-  PROVIDE(etext = .);
+        KEEP(*(.init))
+        KEEP(*(.fini))
 
-  .rodata : { *(.rodata .rodata.* .gnu.linkonce.r.*) }
+        *(.rodata)
+        *(.rodata*)
 
-  .ARM.exidx :
-  {
-    PROVIDE_HIDDEN(__exidx_start = .);
-    *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-    PROVIDE_HIDDEN(__exidx_end = .);
-  }
+        . = ALIGN(4);
+        _etext = .;
+    } > CODE
 
-  /*
-   * The writable segment starts at the next page boundary.
-   */
-  . = ALIGN(CONSTANT(MAXPAGESIZE))
-      + (. & (CONSTANT(MAXPAGESIZE) - 1));
 
-  .init_array :
-  {
-    PROVIDE_HIDDEN(__init_array_start = .);
-    KEEP (*(SORT_BY_INIT_PRIORITY(.init_array.*)))
-    KEEP (*(.init_array))
-    PROVIDE_HIDDEN(__init_array_end = .);
-  }
+    /*
+     * Exception unwinding sections, useful when linking
+     * with some GCC libraries.
+     */
+    .ARM.extab :
+    {
+        *(.ARM.extab* .gnu.linkonce.armextab.*)
+    } > CODE
 
-  .fini_array :
-  {
-    PROVIDE_HIDDEN(__fini_array_start = .);
-    KEEP (*(SORT_BY_INIT_PRIORITY(.fini_array.*)))
-    KEEP (*(.fini_array))
-    PROVIDE_HIDDEN(__fini_array_end = .);
-  }
+    .ARM.exidx :
+    {
+        __exidx_start = .;
+        *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+        __exidx_end = .;
+    } > CODE
 
-  .data :
-  {
-    __data_start = .;
-    *(.data .data.* .gnu.linkonce.d.*)
-    SORT(CONSTRUCTORS)
-  }
 
-  _edata = .;
-  PROVIDE(edata = .);
+    /*
+     * Initial data values are stored in CODE.
+     */
+    _sidata = LOADADDR(.data);
 
-  .persistent :
-  {
-    PROVIDE(__persistent_start = .);
-    *(.persistent .persistent.* .gnu.linkonce.p.*)
-    . = ALIGN(4);
-    PROVIDE(__persistent_end = .);
-  }
+    .data :
+    {
+        . = ALIGN(4);
 
-  __bss_start = .;
-  __bss_start__ = .;
+        _sdata = .;
 
-  .bss :
-  {
-    *(.dynbss)
-    *(.bss .bss.* .gnu.linkonce.b.*)
-    *(COMMON)
-    . = ALIGN(4);
-  }
+        *(.data)
+        *(.data*)
 
-  _bss_end__ = .;
-  __bss_end__ = .;
+        . = ALIGN(4);
 
-  .noinit (NOLOAD) :
-  {
-    PROVIDE(__noinit_start = .);
-    *(.noinit .noinit.* .gnu.linkonce.n.*)
-    . = ALIGN(4);
-    PROVIDE(__noinit_end = .);
-  }
+        _edata = .;
+    } > RAM AT > CODE
 
-  . = ALIGN(4);
 
-  __end__ = .;
-  _end = .;
-  PROVIDE(end = .);
+    /*
+     * Zero-initialized data
+     */
+    .bss :
+    {
+        . = ALIGN(4);
 
-  /*
-   * The default script reserves a stack section at address 0x80000.
-   */
-  .stack 0x80000 :
-  {
-    _stack = .;
-    *(.stack)
-  }
+        _sbss = .;
+        __bss_start__ = .;
 
-  /DISCARD/ :
-  {
-    *(.note.GNU-stack)
-    *(.gnu_debuglink)
-    *(.gnu.lto_*)
-    *(.gnu_object_only)
-  }
+        *(.bss)
+        *(.bss*)
+        *(COMMON)
+
+        . = ALIGN(4);
+
+        _ebss = .;
+        __bss_end__ = .;
+    } > RAM
+
+
+    /*
+     * Heap starts after BSS.
+     */
+    .heap :
+    {
+        . = ALIGN(8);
+        _heap_start = .;
+        __HeapBase = .;
+    } > RAM
+
+    _end = .;
+    end = .;
+
+    /*
+     * The stack grows downward from 0x28400000.
+     */
+    __StackTop = ORIGIN(RAM) + LENGTH(RAM);
 }
+

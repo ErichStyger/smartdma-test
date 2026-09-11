@@ -76,12 +76,16 @@ add_compile_options(
   -ffunction-sections 
   -fdata-sections 
 
-  #-ffreestanding 
-  #-fno-builtin 
-  #-fmerge-constants 
-  -mcpu=arm926ej-s
-  -mfloat-abi=soft
-  -marm
+  -ffreestanding 
+  -fno-builtin 
+  -fmerge-constants
+
+ # -mcpu=arm926ej-s
+#  -mfloat-abi=soft
+#  -marm
+
+  -mcpu=cortex-m33
+  -mthumb
 )
 
 target_compile_definitions(${EXECUTABLE} PRIVATE
