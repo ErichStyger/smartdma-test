@@ -20,7 +20,7 @@ endif()
 
 # Set variables for project directory and SDK
 set(PROJECT_ROOT_DIR  "${CMAKE_CURRENT_SOURCE_DIR}")
-set(MCULIB_DIR        "${PROJECT_ROOT_DIR}/../McuLib")
+#set(MCULIB_DIR        "${PROJECT_ROOT_DIR}/../McuLib")
 set(SDK_DIR           "${PROJECT_ROOT_DIR}/sdk")
 set(BUILD_DIR         "${PROJECT_ROOT_DIR}/build")
 
@@ -28,11 +28,11 @@ set(BUILD_DIR         "${PROJECT_ROOT_DIR}/build")
 set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/arm-none-eabi-gcc.cmake)
 
 # Setup project name
-project(tinyK22)
+project(qemutest)
 
 set(EXECUTABLE ${PROJECT_NAME}.elf)
 set(EXECUTABLE_OUTPUT_PATH ${BUILD_DIR}/${CMAKE_BUILD_TYPE})
-set(LINKER_FILE "${SDK_DIR}/device/linker.ld")
+set(LINKER_FILE "${PROJECT_ROOT_DIR}/linker.ld")
 
 enable_language(C ASM)
 set(CMAKE_C_STANDARD 99)
