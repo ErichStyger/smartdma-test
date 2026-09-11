@@ -20,8 +20,8 @@ endif()
 
 # Set variables for project directory and SDK
 set(PROJECT_ROOT_DIR  "${CMAKE_CURRENT_SOURCE_DIR}")
-#set(MCULIB_DIR        "${PROJECT_ROOT_DIR}/../McuLib")
-set(SDK_DIR           "${PROJECT_ROOT_DIR}/sdk")
+set(MCULIB_DIR        "${PROJECT_ROOT_DIR}/McuLib")
+#set(SDK_DIR           "${PROJECT_ROOT_DIR}/sdk")
 set(BUILD_DIR         "${PROJECT_ROOT_DIR}/build")
 
 # Path to toolchain file. This one has to be before 'project()' below
